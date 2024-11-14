@@ -1,30 +1,8 @@
-import { useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import customFetch from './utils'
+import { usedeleteTask, useeditTask } from './reactQueryCustomHooks'
 
 const SingleItem = ({ item }) => {
-  const [isChecked, setisChecked] = useState(false)
-  const queryClient = useQueryClient()
-
-  const { mutate: editTask } = useMutation({
-    mutationFn: ({ id, isDone }) => {
-      return customFetch.patch(`/${id}`, {
-        isDone,
-      })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
-    },
-  })
-
-  const { mutate: deleteTask } = useMutation({
-    mutationFn: ({ id }) => {
-      return customFetch.delete(`/${id}`)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
-    },
-  })
+  const { editTask } = useeditTask()
+  const { deleteTask } = usedeleteTask()
   return (
     <div className="single-item">
       <input
